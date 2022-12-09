@@ -1,0 +1,55 @@
+# En este archivo de configuración, los administradores del servidor podrán actualizar la
+# información de los items usados como Billetes en la economía del servidor.
+Config:
+  # El patron a seguir para añadir un nuevo item(Billete) a comprobar será el siguiente:
+  # IMPORTANTE: LOS VALORES CONSIGNADOS EN ESTE ARCHIVO DEBEN SER LOS MISMOS QUE SE INDICARON
+  #             AL CREAR EL ITEM EN EL PLUGIN IE.
+ #Billete#(Nombre del Billete con su respectiva denominación):
+     #item_material:  se colocará el nombre del material del Billete previamente elegido en el Plugin IE.
+     #                los nombres de los materiales se pueden encontrar en el siguiente link:
+     #                https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+     #name:  se colocará el nombre exacto que se estableció al momento de crear el item
+     #       con sus respectivos códigos de color y estructura.
+     #lore:
+     #- "en este espacio se colocará el lore correspondiente al Billete con sus"
+     #- "códigos de color y estructura, a su vez se podría añadir las líneas de lore"
+     #- "que sea necesarias siguiendo este formato de lista"
+     #customModelData: se colocara un número entero que será correspondiente al número
+    #                  de customModelData dado al item al momento de su creación
+    #                  para temas de textura y demás.
+  Billete2:
+      item_material: IRON_INGOT
+      name: "&3&l2 PESOS"
+      lore: 
+      - "&f&oBanco de la República"
+      customModelData: "1"                  
+  Billete5:
+      item_material: IRON_INGOT
+      name: "&6&l5 PESOS"
+      lore: 
+      - "&f&oBanco de la República"
+      customModelData: "2"    
+  Billete10:
+      item_material: IRON_INGOT
+      name: "&c&l10 PESOS"
+      lore: 
+      - "&f&oBanco de la República"
+      customModelData: "3"    
+  Billete20:
+      item_material: IRON_INGOT
+      name: "&6&l20 PESOS"
+      lore: 
+      - "&f&oBanco de la República"
+      customModelData: "4"                
+  Billete50:
+      item_material: IRON_INGOT
+      name: "&d&l50 PESOS"
+      lore: 
+      - "&f&oBanco de la República"
+      customModelData: "5"
+  Billete100:
+      item_material: IRON_INGOT
+      name: "&a&l100 PESOS"
+      lore: 
+      - "&f&oBanco de la República"
+      customModelData: "6"                

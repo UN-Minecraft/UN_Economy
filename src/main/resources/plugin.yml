@@ -1,0 +1,14 @@
+name: UN_Economy
+version: '${project.version}'
+main: me.escordax13.un_economy.UN_Economy
+api-version: 1.18
+authors: [ Escordax13 ]
+description: Plugin for manage economy of server RP_UNAL
+#En esta sección de commands se añadirán los nuevos comandos que allan
+#sido creados en el plugin siguiendo esta estructura.
+#commands:
+#  nombre del comando:
+#    description: línea en la que ira la descripción de lo que hace el comando en cuestión.
+commands:
+  un_economy:
+    description: command made for manage operations for sever economy
