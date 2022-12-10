@@ -93,6 +93,32 @@ public class MenuCommand implements CommandExecutor {
 
         return item;
     }
+    /*El siguiente método nos permitirá realizar la lógica que comprobara si en el
+    * inventario del jugador se encuentra el item un item específico que en el servidor hace el rol de un Billete,
+    * Si en el inventario del jugador se encuentra dicho item, se retirara únicamente una unidad de ese item y
+     * utilizando el siguiente comando: /money give “nombre del jugador” 2 en la consola del servidor
+     * se le cargará al saldo económico del jugador el valor del Billete y se le indicará por
+     * un mensaje en el chat del juego que su transacción fue exitosa.
+     * Si no se encuentra dicho item, se le retornara un mensaje en el chat al jugador indicándole que
+     * no posee tal item por lo que no puede ejecutar el comando*/
+    public void comprobacionBilleteInventario (ItemStack item, ItemStack[] inventory, Player jugador ){
+
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
+                ItemStack removeItem = jugador.getInventory().getItem(i);
+                assert removeItem != null;
+                int amount = removeItem.getAmount() - 1;
+                removeItem.setAmount(amount);
+                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
+                jugador.updateInventory();
+                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 2");
+
+                jugador.sendMessage(plugin.name + ChatColor.GREEN + "¡Transacción Exitosa!");
+                return;
+            }
+        }
+        jugador.sendMessage(plugin.name + ChatColor.RED + "¡Transacción Declinada!");
+    }
 
     /*El siguiente método es propio de Bukkit de la interfaz CommandExecutor, los argumentos que este método recibe son:
     * 1 argumento de tipo Interfaz CommandSender inicializado bajo el identificador sender
@@ -127,34 +153,17 @@ public class MenuCommand implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("billete2")) {
                     // /un_economy billete2
                     /*En este caso es un comando que al ser usado comprobara si el usuario posee un Billete de 2 Pesos.
-                    * Para tal comprobación se llamará al método Billete el cual crea un item similar al del Billete del servidor.
-                    * Si en el inventario del jugador se encuentra dicho item, se retirara únicamente una unidad de ese item y
-                    * utilizando el siguiente comando: /money give “nombre del jugador” 2 en la consola del servidor
-                    * se le cargará al saldo económico del jugador el valor del Billete
-                    * Si no se encuentra dicho item, se le retornara un mensaje en el chat al jugador indicándole que
-                    * no posee tal item por lo que no puede ejecutar el comando.
+                    * Para tal comprobación se llamará al método Billete() el cual crea un item similar al del Billete del servidor.
+                    * Posteriormente, se llamará al método comprobacionBilleteInventario() el cual ejecutara la lógica necesaria
+                    * para la revisión que requiere dicho comando del inventario del jugador.
                     * Esta misma lógica y funcionalidad se replicará con los otros 5 items de Billetes*/
                     if (config.contains("Config.Billete2.item_material")) {
 
                         ItemStack item = billete("2");
 
                         ItemStack[] inventory = jugador.getInventory().getContents();
-                        for (int i = 0; i < inventory.length; i++) {
-                            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
-                                ItemStack removeItem = jugador.getInventory().getItem(i);
-                                assert removeItem != null;
-                                int amount = removeItem.getAmount() - 1;
-                                removeItem.setAmount(amount);
-                                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
-                                jugador.updateInventory();
-                                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 2");
-                                return true;
-                            }
-                        }
 
-                        jugador.sendMessage(plugin.name + ChatColor.RED + "No tienes el objeto necesario para ejecutar este comando");
-                        return true;
-
+                        comprobacionBilleteInventario(item, inventory, jugador);
                     }
                 } else if (args[0].equalsIgnoreCase("billete5")) {
                     // /un_economy billete5
@@ -163,22 +172,8 @@ public class MenuCommand implements CommandExecutor {
                         ItemStack item = billete("5");
 
                         ItemStack[] inventory = jugador.getInventory().getContents();
-                        for (int i = 0; i < inventory.length; i++) {
-                            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
-                                ItemStack removeItem = jugador.getInventory().getItem(i);
-                                assert removeItem != null;
-                                int amount = removeItem.getAmount() - 1;
-                                removeItem.setAmount(amount);
-                                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
-                                jugador.updateInventory();
-                                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 5");
-                                return true;
-                            }
-                        }
 
-                        jugador.sendMessage(plugin.name + ChatColor.RED + "No tienes el objeto necesario para ejecutar este comando");
-                        return true;
-
+                        comprobacionBilleteInventario(item, inventory, jugador);
                     }
                 } else if (args[0].equalsIgnoreCase("billete10")) {
                     // /un_economy billete10
@@ -187,21 +182,8 @@ public class MenuCommand implements CommandExecutor {
                         ItemStack item = billete("10");
 
                         ItemStack[] inventory = jugador.getInventory().getContents();
-                        for (int i = 0; i < inventory.length; i++) {
-                            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
-                                ItemStack removeItem = jugador.getInventory().getItem(i);
-                                assert removeItem != null;
-                                int amount = removeItem.getAmount() - 1;
-                                removeItem.setAmount(amount);
-                                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
-                                jugador.updateInventory();
-                                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 10");
-                                return true;
-                            }
-                        }
 
-                        jugador.sendMessage(plugin.name + ChatColor.RED + "No tienes el objeto necesario para ejecutar este comando");
-                        return true;
+                        comprobacionBilleteInventario(item, inventory, jugador);
                     }
                 } else if (args[0].equalsIgnoreCase("billete20")) {
                     // /un_economy billete20
@@ -210,21 +192,8 @@ public class MenuCommand implements CommandExecutor {
                         ItemStack item = billete("20");
 
                         ItemStack[] inventory = jugador.getInventory().getContents();
-                        for (int i = 0; i < inventory.length; i++) {
-                            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
-                                ItemStack removeItem = jugador.getInventory().getItem(i);
-                                assert removeItem != null;
-                                int amount = removeItem.getAmount() - 1;
-                                removeItem.setAmount(amount);
-                                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
-                                jugador.updateInventory();
-                                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 20");
-                                return true;
-                            }
-                        }
 
-                        jugador.sendMessage(plugin.name + ChatColor.RED + "No tienes el objeto necesario para ejecutar este comando");
-                        return true;
+                        comprobacionBilleteInventario(item, inventory, jugador);
                     }
                 } else if (args[0].equalsIgnoreCase("billete50")) {
                     // /un_economy billete50
@@ -233,21 +202,8 @@ public class MenuCommand implements CommandExecutor {
                         ItemStack item = billete("50");
 
                         ItemStack[] inventory = jugador.getInventory().getContents();
-                        for (int i = 0; i < inventory.length; i++) {
-                            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
-                                ItemStack removeItem = jugador.getInventory().getItem(i);
-                                assert removeItem != null;
-                                int amount = removeItem.getAmount() - 1;
-                                removeItem.setAmount(amount);
-                                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
-                                jugador.updateInventory();
-                                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 50");
-                                return true;
-                            }
-                        }
 
-                        jugador.sendMessage(plugin.name + ChatColor.RED + "No tienes el objeto necesario para ejecutar este comando");
-                        return true;
+                        comprobacionBilleteInventario(item, inventory, jugador);
                     }
                 } else if (args[0].equalsIgnoreCase("billete100")) {
                     // /un_economy billete100
@@ -256,21 +212,8 @@ public class MenuCommand implements CommandExecutor {
                         ItemStack item = billete("100");
 
                         ItemStack[] inventory = jugador.getInventory().getContents();
-                        for (int i = 0; i < inventory.length; i++) {
-                            if (inventory[i] != null && inventory[i].isSimilar(item) && inventory[i].getAmount() >= item.getAmount()) {
-                                ItemStack removeItem = jugador.getInventory().getItem(i);
-                                assert removeItem != null;
-                                int amount = removeItem.getAmount() - 1;
-                                removeItem.setAmount(amount);
-                                jugador.getInventory().setItem(i, amount > 0 ? removeItem : null);
-                                jugador.updateInventory();
-                                jugador.getServer().dispatchCommand(jugador.getServer().getConsoleSender(), "money give " + jugador.getDisplayName() + " 100");
-                                return true;
-                            }
-                        }
 
-                        jugador.sendMessage(plugin.name + ChatColor.RED + "No tienes el objeto necesario para ejecutar este comando");
-                        return true;
+                        comprobacionBilleteInventario(item, inventory, jugador);
                     }
                 } else if (args[0].equalsIgnoreCase("verf")) {
                     // /un_economy verf
